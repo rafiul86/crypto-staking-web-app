@@ -6,6 +6,7 @@ function App() {
   const [account, setAccount] = useState();
   const [contactList, setContactList] = useState();
   const [contactsName, setContactsName] = useState([]);
+  const [nameValue, setNameValue] = useState('');
   let CONTACT_ABI = NameStorageContract.abi;
   let CONTACT_ADDRESS = "0xc7e8eBD5cafA964e244579DC88aDE8C93012B9fc"
   useEffect(() => {
@@ -25,16 +26,16 @@ function App() {
     load();
   }, []);
   const setUserName = async () => {
-    let name = "rafi"
-    await contactList.methods.setName(name).send({ from: account });
+    
+    await contactList.methods.setName(nameValue).send({ from: account });
     const newName = await contactList.methods.name().call();
       setContactsName(newName);
-    console.log("Name set to: " + name + " " + newName);
+    console.log("Name set to: " + nameValue + " " + newName);
   }
   return (
     <div>
     <h1>Your account is: {contactsName}</h1> 
-    <input ></input>
+    <input type="text" onChange={(e)=>setNameValue(e.target.value)}></input>
     <button onClick={()=>setUserName()}>SetName</button>
     </div>
   );
